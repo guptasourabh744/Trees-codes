@@ -1,0 +1,39 @@
+
+class Solution {
+public:
+    // Helper function to check if the binary tree is balanced and calculate its height
+    pair<bool, int> isBalancedFast(TreeNode* root) {
+        // Base case: if the node is NULL, return true and height as 0
+        if (root == NULL) {
+            pair<bool, int> p = make_pair(true, 0);
+            return p;
+        }
+
+        // Recursive calls to check if left and right subtrees are balanced and calculate their heights
+        pair<bool, int> left = isBalancedFast(root->left);
+        pair<bool, int> right = isBalancedFast(root->right);
+
+        // Extract information about the balance of left and right subtrees and the height difference
+        bool leftans = left.first;
+        bool rightans = right.first;
+        bool diff = abs(left.second - right.second) <= 1;
+
+        pair<bool, int> ans;
+        ans.second = max(left.second, right.second) + 1; // Calculate the height of the current node's subtree
+
+        // Check if the current node's subtree is balanced based on left and right subtree balance and height difference
+        if (leftans && rightans && diff) {
+            ans.first = true; // If balanced, set the first value of the pair to true
+        } else {
+            ans.first = false; // If not balanced, set the first value of the pair to false
+        }
+
+        return ans;
+    }
+
+    // Function to check if the given binary tree is balanced
+    bool isBalanced(TreeNode* root) {
+        // Call the helper function and return the first value of the pair (balance status)
+        return isBalancedFast(root).first;
+    }
+};
