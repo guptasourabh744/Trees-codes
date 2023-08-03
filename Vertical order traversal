@@ -1,1 +1,52 @@
+class Solution {
+public:
+    vector<vector<int>> verticalTraversal(TreeNode* root) {
+        // Create a map to store nodes based on their x, y coordinates and their values
+        map<int, map<int, multiset<int>>> nodes;
+
+        // Create a queue to perform level-order traversal of the tree
+        queue<pair<TreeNode*, pair<int, int>>> q;
+
+        // Start the traversal from the root node with coordinates (0, 0)
+        q.push({root, {0, 0}});
+
+        while (!q.empty()) {
+            // Dequeue the front element
+            auto p = q.front();
+            q.pop();
+
+            // Extract the node, x, and y coordinates from the dequeued element
+            TreeNode* node = p.first;
+            int x = p.second.first;
+            int y = p.second.second;
+
+            // Insert the node's value into the map based on its x and y coordinates
+            nodes[x][y].insert(node->val);
+
+            // Enqueue the left child with updated coordinates (x-1, y+1) if it exists
+            if (node->left)
+                q.push({node->left, {x - 1, y + 1}});
+
+            // Enqueue the right child with updated coordinates (x+1, y+1) if it exists
+            if (node->right)
+                q.push({node->right, {x + 1, y + 1}});
+        }
+
+        // Prepare the final result vector to store the vertical order traversal
+        vector<vector<int>> ans;
+        
+        // Traverse the nodes map to collect values in each column and add them to ans
+        for (auto p : nodes) {
+            vector<int> col;
+
+            // Collect all values in the current column (sorted due to multiset)
+            for (auto k : p.second) {
+                col.insert(col.end(), k.second.begin(), k.second.end());
+            }
+            ans.push_back(col); // Add the column to the final result vector
+        }
+
+        return ans; // Return the vertical order traversal of the binary tree
+    }
+};
 
