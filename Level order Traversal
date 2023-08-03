@@ -1,0 +1,41 @@
+Video link->   https://www.youtube.com/watch?v=EoAsWbO7sqg&t=346s
+
+Solution->  
+
+
+
+class Solution {
+public:
+    // Function to perform level order traversal of a binary tree
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        vector<vector<int> > ans; // Vector of vectors to store the level order traversal
+        
+        if (root == NULL)
+            return ans; // Return an empty vector if the tree is empty
+
+        queue<TreeNode*> q; // Queue to help with level order traversal
+        
+        q.push(root); // Push the root node into the queue
+
+        while (!q.empty()) { // Continue until the queue is empty (i.e., all levels are traversed)
+            int size = q.size(); // Get the current size of the queue (number of nodes at this level)
+            vector<int> level; // Vector to store the nodes at the current level
+
+            for (int i = 0; i < size; i++) { // Process nodes at the current level
+                TreeNode* node = q.front(); // Get the front node from the queue
+                q.pop(); // Remove the front node from the queue
+
+                // If the node has left or right children, push them into the queue
+                if (node->left)
+                    q.push(node->left);
+                if (node->right)
+                    q.push(node->right);
+
+                level.push_back(node->val); // Push the node's value into the current level vector
+            }
+            ans.push_back(level); // Push the current level vector into the answer vector
+        }
+        
+        return ans; // Return the level order traversal of the binary tree
+    }
+};
