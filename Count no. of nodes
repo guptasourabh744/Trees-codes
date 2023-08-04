@@ -1,0 +1,46 @@
+
+class Solution {
+public:
+    // Function to find the height of the left subtree of a binary tree rooted at 'node'.
+    int findheightleft(TreeNode* node) {
+        int hght = 0;
+
+        while(node) {
+            hght++;
+            node = node->left;
+        }
+        return hght;
+    }
+
+    // Function to find the height of the right subtree of a binary tree rooted at 'node'.
+    int findheightright(TreeNode* node) {
+        int hght=0;
+
+        while(node) {
+            hght++;
+            node = node->right;
+        }
+        return hght;
+    }
+
+    // Function to count the total number of nodes in a complete binary tree rooted at 'root'.
+    int countNodes(TreeNode* root) {
+        if( root == NULL)
+            return 0;
+
+        int lh = findheightleft(root);      // Get the height of the left subtree.
+        int rh = findheightright(root);     // Get the height of the right subtree.
+
+        if(lh == rh) {
+            // If the heights are equal, it means the tree is a perfect binary tree.
+            // In this case, the total number of nodes can be calculated as (2^h) - 1,
+            // where 'h' is the height of the tree.
+            return (1 << lh) - 1;
+        } else {
+            // If the heights are not equal, it means the tree is not a perfect binary tree.
+            // In this case, we recursively count the number of nodes in the left and right subtrees
+            // and add 1 for the current root node to get the total number of nodes in the tree.
+            return 1 + countNodes(root->left) + countNodes(root->right);
+        }
+    }
+};
