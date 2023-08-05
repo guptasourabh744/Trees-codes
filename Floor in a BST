@@ -1,0 +1,19 @@
+int floor(Node* root, int x) {
+    
+    int floor = -1;
+    
+    while(root) {
+        if( x == root->data) {
+            floor = root->data;
+            return floor;
+        }
+        else if( x < root->data) {
+            root = root->left;
+        }
+        else{
+            floor = root->data;
+            root = root->right;
+        }
+    }
+    return floor;
+}
