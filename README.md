@@ -9,5 +9,6 @@ Some questions from lecture 65 babbar,
 
 Questions left from BST->
 
-Delete node in BST
+Delete node in BST, 
+Predecessor and successor in BST
 
