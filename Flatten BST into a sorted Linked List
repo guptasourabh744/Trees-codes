@@ -1,0 +1,57 @@
+// This function performs an inorder traversal of a binary tree and stores the node values in the given vector 'in'.
+// It visits the left subtree, then the current node, and finally the right subtree.
+void inorder(TreeNode<int>* root, vector<int> &in) {
+    // Base case: If the current node is NULL, return as there is nothing to process.
+    if (root == NULL)
+        return;
+
+    // Recursively traverse the left subtree and store its values in the 'in' vector.
+    inorder(root->left, in);
+
+    // Store the value of the current node in the 'in' vector.
+    in.push_back(root->data);
+
+    // Recursively traverse the right subtree and store its values in the 'in' vector.
+    inorder(root->right, in);
+}
+
+// This function takes the root of a binary tree and returns a new tree that represents the flattened version of the original tree.
+// The flattened tree is essentially a singly linked list where the 'right' pointer of each node points to the next node in the list.
+TreeNode<int>* flatten(TreeNode<int>* root) {
+    // Create an empty vector to store the inorder traversal of the binary tree.
+    vector<int> inorderval;
+    
+    // Perform an inorder traversal of the original tree and store its values in the 'inorderval' vector.
+    inorder(root, inorderval);
+
+    // Get the size of the 'inorderval' vector, which represents the number of nodes in the binary tree.
+    int n = inorderval.size();
+
+    // Create a new tree node with the value of the first element in the 'inorderval' vector.
+    TreeNode<int>* newroot = new TreeNode<int>(inorderval[0]);
+
+    // Initialize a pointer 'curr' to keep track of the current node in the new flattened tree.
+    TreeNode<int>* curr = newroot;
+
+    // Iterate through the remaining elements in the 'inorderval' vector to create the flattened tree.
+    for (int i = 1; i < n; i++) {
+        // Create a new tree node with the value of the current element in the 'inorderval' vector.
+        TreeNode<int>* temp = new TreeNode<int>(inorderval[i]);
+
+        // Set the 'left' pointer of the current node to NULL, as this is now a singly linked list.
+        curr->left = NULL;
+
+        // Set the 'right' pointer of the current node to point to the newly created node 'temp'.
+        curr->right = temp;
+
+        // Move 'curr' to the newly created node 'temp' to continue the list construction.
+        curr = temp;
+    }
+
+    // Set the 'left' and 'right' pointers of the last node in the list to NULL, as there are no more nodes after it.
+    curr->left = NULL;
+    curr->right = NULL;
+
+    // Return the root of the newly constructed flattened tree.
+    return newroot;
+}
