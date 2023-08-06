@@ -5,3 +5,9 @@ Construct binary tree from given Preorder and postorder ,
 Boundary traversal, 
 Minimum time to burn entire tree, 
 Some questions from lecture 65 babbar, 
+
+
+Questions left from BST->
+
+Delete node in BST
+
