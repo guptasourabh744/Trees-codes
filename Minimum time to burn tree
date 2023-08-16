@@ -1,0 +1,89 @@
+#include <queue>
+#include <map>
+
+class Solution {
+public:
+    // Function to create a mapping of parent nodes and find the target node
+    Node* createparentmapping(Node* root, int target, std::map<Node*, Node*> &parent) {
+        Node* res = NULL;
+        
+        std::queue<Node*> q;
+        q.push(root);
+        parent[root] = NULL; // Root node has no parent
+        
+        // BFS traversal to find the target node and build the parent mapping
+        while (!q.empty()) {
+            Node* front = q.front();
+            q.pop();
+            
+            if (front->data == target) {
+                res = front; // Found the target node
+            }
+            
+            if (front->left) {
+                parent[front->left] = front; // Set parent of left child
+                q.push(front->left);
+            }
+            
+            if (front->right) {
+                parent[front->right] = front; // Set parent of right child
+                q.push(front->right);
+            }
+        }
+        
+        return res;
+    }
+    
+    // Function to solve the problem using BFS traversal
+    int solve(Node* root, std::map<Node*, Node*> &parent, int &ans) {
+        std::map<Node*, bool> visited;
+        std::queue<Node*> q;
+        
+        q.push(root);
+        visited[root] = true;
+        
+        while (!q.empty()) {
+            int size = q.size();
+            bool flag = false;
+            
+            // Process all nodes at the current level
+            for (int i = 0; i < size; i++) {
+                Node* front = q.front();
+                q.pop();
+                
+                if (front->left && !visited[front->left]) {
+                    flag = true;
+                    q.push(front->left);
+                    visited[front->left] = true;
+                }
+                
+                if (front->right && !visited[front->right]) {
+                    flag = true;
+                    q.push(front->right);
+                    visited[front->right] = true;
+                }
+                
+                if (parent[front] && !visited[parent[front]]) {
+                    flag = true;
+                    q.push(parent[front]);
+                    visited[parent[front]] = true;
+                }
+            }
+            
+            if (flag) {
+                ans++; // Increment the answer when flag is true
+            }
+        }
+        
+        return ans; // Return the computed answer
+    }
+    
+    // Main function to find the minimum time to reach the target node
+    int minTime(Node* root, int target) {
+        std::map<Node*, Node*> parent;
+        Node* targetnode = createparentmapping(root, target, parent);
+        int ans = 0; // Initialize the answer
+        int result = solve(targetnode, parent, ans); // Solve the problem
+        return result; // Return the final result
+    }
+};
