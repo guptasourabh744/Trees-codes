@@ -1,0 +1,40 @@
+lass Solution {
+public:
+
+
+    int findposition(vector<int> &inorder, int element, int n) {
+        for( int i=0; i<n; i++){
+            if( inorder[i]==element)
+            return i;
+        }
+
+        return -1;
+    }
+
+    TreeNode* solve(vector<int>& inorder, vector<int>& preorder, int &index, int instart, int inend, int n) {
+    if (index < 0 || instart > inend)
+        return NULL;
+
+    int element = preorder[index];
+    TreeNode* root = new TreeNode(element);
+
+    int position = findposition(inorder, element, n);
+
+    index--;
+
+    root->right = solve(inorder, preorder, index, position + 1, inend, n);
+    root->left = solve(inorder, preorder, index, instart, position - 1, n);
+
+    return root;
+}
+
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        int n = inorder.size();
+        int preindex = n-1;
+        
+
+        TreeNode* ans = solve(inorder, preorder, preindex, 0, n-1, n);
+
+        return ans;
+    }
+};
