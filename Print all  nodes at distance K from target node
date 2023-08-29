@@ -1,0 +1,71 @@
+class Solution {
+public:
+
+    void markparents(TreeNode* root, TreeNode* target, unordered_map<TreeNode*, TreeNode*> &parent) {
+        queue<TreeNode*> q;
+        q.push(root);
+        while( !q.empty()) {
+            TreeNode* front = q.front();
+            q.pop();
+
+            if( front->left) {
+                parent[front->left] = front;
+                q.push(front->left);
+            }
+
+            if( front->right) {
+                parent[front->right] = front;
+                q.push(front->right);
+            }
+        }
+    }
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
+        unordered_map<TreeNode*, TreeNode*> parent;
+
+        markparents(root, target, parent);
+        unordered_map<TreeNode*, bool> visited;
+
+        queue<TreeNode*> q;
+        q.push(target);
+        visited[target] = true;
+
+        int dist = 0;
+
+        while( !q.empty()) {
+            int size = q.size();
+            if( dist++ == k)
+            break;
+
+            for( int i=0; i<size; i++) {
+                TreeNode* front = q.front();
+                q.pop();
+
+                if( front->left && !visited[front->left]) {
+                    q.push(front->left);
+                    visited[front->left] = true;
+                }
+
+                if( front->right && !visited[front->right]) {
+                    q.push(front->right);
+                    visited[front->right] = true;
+                }
+
+                if( parent[front] && !visited[parent[front]] ) {
+                    q.push(parent[front]);
+                    visited[parent[front]] = true;
+                }
+            }
+        }
+
+        vector<int> result;
+
+        while( !q.empty()) {
+            TreeNode* front = q.front();
+            q.pop();
+
+            result.push_back(front->val);
+        }
+
+        return result;
+    }
+};
