@@ -1,2 +1,31 @@
 Video link->  https://www.youtube.com/watch?v=WszrfSwMz58
 leetcode link->  https://leetcode.com/problems/binary-tree-maximum-path-sum/
+
+
+
+class Solution {
+public:
+
+    int solve(TreeNode* root, int &maxi) {
+        if(root==NULL)
+        return 0;
+
+        int leftmax = max(0, solve(root->left, maxi));
+        int rightmax = max(0, solve(root->right, maxi));
+
+        int val = root->val;
+
+        maxi = max(maxi, val + (leftmax + rightmax));
+
+        return max(leftmax, rightmax) + val;
+
+
+    }
+    int maxPathSum(TreeNode* root) {
+        int maxi = INT_MIN;
+        solve(root, maxi);
+        return maxi;
+    }
+};
+
+
