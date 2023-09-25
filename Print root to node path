@@ -1,25 +1,60 @@
-bool findPath(TreeNode* root, vector<int>& path, int target) {
-    if (root == NULL)
-        return false;
-
-    path.push_back(root->val);
-
-    if (root->val == target)
-        return true;
-
-    if (findPath(root->left, path, target) || findPath(root->right, path, target))
-        return true;
-
-    path.pop_back();
+bool getPath(node * root, vector < int > & arr, int x) {
+  // if root is NULL
+  // there is no path
+  if (!root)
     return false;
+
+  // push the node's value in 'arr'
+  arr.push_back(root -> data);
+
+  // if it is the required node
+  // return true
+  if (root -> data == x)
+    return true;
+
+  // else check whether the required node lies
+  // in the left subtree or right subtree of
+  // the current node
+  if (getPath(root -> left, arr, x) ||
+    getPath(root -> right, arr, x))
+    return true;
+
+  // required node does not lie either in the
+  // left or right subtree of the current node
+  // Thus, remove current node's value from
+  // 'arr'and then return false   
+  arr.pop_back();
+  return false;
 }
 
-vector<int> Solution::solve(TreeNode* A, int B) {
-    vector<int> path;
+struct node * newNode(int data) {
+  struct node * node = (struct node * ) malloc(sizeof(struct node));
+  node -> data = data;
+  node -> left = NULL;
+  node -> right = NULL;
 
-    if (!findPath(A, path, B)) {
-        path.clear(); // Clear the vector if path is not found
-    }
+  return (node);
+}
 
-    return path;
+int main() {
+
+  struct node * root = newNode(1);
+  root -> left = newNode(2);
+  root -> left -> left = newNode(4);
+  root -> left -> right = newNode(5);
+  root -> left -> right -> left = newNode(6);
+  root -> left -> right -> right = newNode(7);
+  root -> right = newNode(3);
+
+  vector < int > arr;
+
+  bool res;
+  res = getPath(root, arr, 7);
+
+  cout << "The path is ";
+  for (auto it: arr) {
+    cout << it << " ";
+  }
+
+  return 0;
 }
